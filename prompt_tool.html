@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bito → Power BI  |  Teaching Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0f14;
+  --surface:  #161922;
+  --card:     #1e2330;
+  --border:   #2a3040;
+  --accent:   #4f9cf9;
+  --accent2:  #38d9a9;
+  --warn:     #f7b731;
+  --danger:   #fc5c65;
+  --text:     #e8eaf0;
+  --muted:    #8891a8;
+  --mono:     'JetBrains Mono', monospace;
+  --sans:     'Syne', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+header {
+  padding: 28px 40px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; }
+header h1 { font-size: 17px; font-weight: 800; letter-spacing: 0.04em; }
+header h1 span { color: var(--accent); }
+.badge {
+  margin-left: auto;
+  background: rgba(79,156,249,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(79,156,249,0.25);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+
+/* ── Tabs ── */
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 20px 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+.tab {
+  padding: 10px 22px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.lesson-tag {
+  display: inline-block;
+  background: rgba(79,156,249,0.12);
+  color: var(--accent);
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+  font-family: var(--mono);
+}
+
+/* ── Main layout ── */
+main { padding: 32px 40px; max-width: 1200px; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Section headings ── */
+.section-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.section-sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* ── Endpoint selector (Part 1) ── */
+.endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.endpoint-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  color: var(--text);
+}
+.endpoint-btn:hover {
+  border-color: var(--accent);
+  background: rgba(79,156,249,0.06);
+}
+.endpoint-btn.selected {
+  border-color: var(--accent2);
+  background: rgba(56,217,169,0.08);
+}
+.ep-name { font-size: 13px; font-weight: 600; font-family: var(--mono); color: var(--accent); }
+.ep-desc { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── Privacy toggles ── */
+.privacy-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.toggle-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s;
+}
+.toggle-pill input { display: none; }
+.toggle-pill.on {
+  border-color: var(--danger);
+  background: rgba(252,92,101,0.08);
+  color: var(--danger);
+}
+.toggle-pill .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+.toggle-pill.on .dot { background: var(--danger); }
+
+/* ── Generated prompt box ── */
+.prompt-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: #c5cfe8;
+  min-height: 160px;
+  position: relative;
+}
+.copy-btn {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(79,156,249,0.15);
+  border: 1px solid rgba(79,156,249,0.3);
+  color: var(--accent);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.copy-btn:hover { background: rgba(79,156,249,0.25); }
+
+/* ── Code viewer (Part 2) ── */
+.data-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.data-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: var(--sans);
+}
+.data-btn:hover { color: var(--text); border-color: var(--accent); }
+.data-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+pre {
+  padding: 20px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: #c5cfe8;
+}
+
+/* syntax highlights */
+.kw  { color: #c792ea; }
+.str { color: #c3e88d; }
+.cm  { color: #546e7a; font-style: italic; }
+.fn  { color: #82aaff; }
+.num { color: #f78c6c; }
+.var { color: #89ddff; }
+
+/* ── Explanation cards ── */
+.explain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 20px;
+}
+.explain-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+}
+.explain-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.explain-card ul { padding-left: 18px; color: var(--muted); font-size: 12px; line-height: 1.8; }
+.explain-card ul li { color: var(--muted); }
+.explain-card ul li strong { color: var(--text); }
+
+/* ── Flow diagram ── */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.flow-step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 110px;
+}
+.flow-step .step-label { color: var(--muted); font-size: 10px; margin-bottom: 3px; font-weight: 400; }
+.flow-arrow { color: var(--muted); font-size: 18px; flex-shrink: 0; }
+.flow-step.highlight { border-color: var(--accent2); background: rgba(56,217,169,0.06); }
+.flow-step.highlight .step-name { color: var(--accent2); }
+
+/* ── Privacy warning box ── */
+.privacy-warning {
+  background: rgba(247,183,49,0.07);
+  border: 1px solid rgba(247,183,49,0.25);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #e8d5a0;
+}
+.privacy-warning strong { color: var(--warn); }
+
+/* ── Generate button ── */
+.gen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent2);
+  color: #0d1a15;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.gen-btn:hover { opacity: 0.88; }
+
+/* ── Language dropdown ── */
+.lang-selector {
+  position: relative;
+  margin-left: 12px;
+}
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  white-space: nowrap;
+}
+.lang-btn:hover { border-color: var(--accent); }
+.lang-btn .flag { font-size: 15px; line-height: 1; }
+.lang-btn .chevron { color: var(--muted); font-size: 10px; transition: transform 0.2s; }
+.lang-selector.open .chevron { transform: rotate(180deg); }
+.lang-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 150px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.lang-selector.open .lang-menu { display: block; }
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+  color: var(--muted);
+}
+.lang-option:hover { background: var(--surface); color: var(--text); }
+.lang-option.active { color: var(--accent2); background: rgba(56,217,169,0.06); }
+.lang-option .flag { font-size: 16px; }
+
+@media (max-width: 700px) {
+  main { padding: 20px; }
+  header { padding: 20px; }
+  .tabs { padding: 0 20px; overflow-x: auto; }
+  .explain-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-dot"></div>
+  <h1>Bito → <span>Power BI</span> Integration</h1>
+  <div class="badge" data-i18n="badge">Teaching Tool</div>
+  <div class="lang-selector" id="langSelector">
+    <button class="lang-btn" onclick="toggleLangMenu(event)">
+      <span class="flag" id="currentFlag">🇬🇧</span>
+      <span id="currentLangLabel">EN</span>
+      <span class="chevron">▼</span>
+    </button>
+    <div class="lang-menu">
+      <div class="lang-option active" onclick="setLang('en')"><span class="flag">🇬🇧</span> English</div>
+      <div class="lang-option" onclick="setLang('uz')"><span class="flag">🇺🇿</span> O'zbekcha</div>
+      <div class="lang-option" onclick="setLang('ru')"><span class="flag">🇷🇺</span> Русский</div>
+    </div>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('part1')">
+    <span data-i18n="tab1">Part 1 — AI Code Generation</span>
+    <span class="lesson-tag" data-i18n="lesson1tag">Lesson 1</span>
+  </div>
+  <div class="tab" onclick="showTab('part2')">
+    <span data-i18n="tab2">Part 2 — Connect Your Business Data</span>
+    <span class="lesson-tag" data-i18n="lesson2tag">Lesson 2</span>
+  </div>
+  <div class="tab" onclick="showTab('reference')">
+    <span data-i18n="tab3">API Reference</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ═══════════════════════════════════════════════════
+     PART 1 — AI Code Generation
+═══════════════════════════════════════════════════ -->
+<div class="panel active" id="panel-part1">
+  <div class="section-title" data-i18n="p1title">Part 1 — AI generates the code for you</div>
+  <p class="section-sub" data-i18n="p1sub">
+    Students learn to prompt an AI (Claude / ChatGPT) to generate a complete Bito sync script
+    using only the <strong>public API spec</strong> — no company data, no private keys, nothing sensitive.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="step-label" data-i18n="step">Step 1</div>
+      <div class="step-name" data-i18n="flow1">Pick data type</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step highlight">
+      <div class="step-label" data-i18n="step">Step 2</div>
+      <div class="step-name" style="color:var(--accent2)" data-i18n="flow2">Generate prompt</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-label" data-i18n="step">Step 3</div>
+      <div class="step-name" data-i18n="flow3">Paste into AI</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="step-label" data-i18n="step">Step 4</div>
+      <div class="step-name" data-i18n="flow4">Get working code</div>
+    </div>
+  </div>
+
+  <div class="privacy-warning">
+    <strong data-i18n="privacyLabel">Privacy rule (teach this first):</strong>
+    <span data-i18n="privacyText">When using AI to generate code, you NEVER share your API key, company name,
+    customer data, or any real business information. The AI only needs the
+    public API spec — which is safe to share.</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="step1card">Step 1 — What data do you want?</div>
+    <div class="endpoint-grid" id="endpoint-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="step2card">Step 2 — What to exclude (privacy settings)</div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;" data-i18n="step2hint">
+      Toggle ON the fields that contain sensitive personal data — the prompt will tell the AI to exclude them.
+    </p>
+    <div class="privacy-grid" id="privacy-grid"></div>
+  </div>
+
+  <button class="gen-btn" onclick="generatePrompt()">
+    ⚡ <span data-i18n="genBtn">Generate AI Prompt</span>
+  </button>
+
+  <div class="card" style="margin-top:20px;">
+    <div class="card-title" data-i18n="promptCard">Generated Prompt — paste this into Claude or ChatGPT</div>
+    <div class="prompt-box" id="prompt-output">
+      <span data-i18n="promptPlaceholder">Select a data type above and click Generate.</span>
+      <button class="copy-btn" onclick="copyPrompt()" data-i18n="copyBtn">Copy</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     PART 2 — Connect Your Business Data
+═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-part2">
+  <div class="section-title" data-i18n="p2title">Part 2 — Edit the code for your business</div>
+  <p class="section-sub" data-i18n="p2sub">
+    Students take the AI-generated code and make 3 targeted edits to connect it
+    to their own Bito account — without leaking any data in the process.
+  </p>
+
+  <div class="card">
+    <div class="card-title" data-i18n="edit3title">The 3 things students need to change</div>
+    <div class="explain-grid">
+      <div class="explain-card">
+        <h4 style="color:var(--accent)" data-i18n="edit1h">① Add your API key (in .env only)</h4>
+        <ul>
+          <li data-i18n="edit1l1">Never put the key directly in the code</li>
+          <li data-i18n="edit1l2">Create a <strong>.env file</strong> on your machine</li>
+          <li data-i18n="edit1l3">Add: <code style="color:var(--accent2)">BITO_API_KEY=your_key</code></li>
+          <li data-i18n="edit1l4">.env files stay local — never uploaded or shared</li>
+        </ul>
+      </div>
+      <div class="explain-card">
+        <h4 style="color:var(--accent)" data-i18n="edit2h">② Choose which data to sync</h4>
+        <ul>
+          <li data-i18n="edit2l1">Open <strong>sync_runner.py</strong></li>
+          <li data-i18n="edit2l2">Set <strong>True/False</strong> next to each data type</li>
+          <li data-i18n="edit2l3">Only enable what your dashboard needs</li>
+          <li data-i18n="edit2l4">Less data = faster sync + better privacy</li>
+        </ul>
+      </div>
+      <div class="explain-card">
+        <h4 style="color:var(--accent)" data-i18n="edit3h">③ Check what fields you export</h4>
+        <ul>
+          <li data-i18n="edit3l1">Open <strong>bito_client.py</strong></li>
+          <li data-i18n="edit3l2">Find the function for your data type</li>
+          <li data-i18n="edit3l3">Remove any fields you don't need</li>
+          <li data-i18n="edit3l4">Personal fields (phone, address) are already excluded</li>
+        </ul>
+      </div>
+      <div class="explain-card">
+        <h4 style="color:var(--accent2)" data-i18n="edit4h">✓ What never changes</h4>
+        <ul>
+          <li data-i18n="edit4l1">The API endpoints stay the same for everyone</li>
+          <li data-i18n="edit4l2">The CSV output format stays the same</li>
+          <li data-i18n="edit4l3">Power BI connection stays the same</li>
+          <li data-i18n="edit4l4">Only credentials + field selection are personal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title" data-i18n="codeCard">Step-by-step code — select what you need</div>
+    <div class="data-selector" id="data-selector"></div>
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots">
+          <span style="background:#fc5c65"></span>
+          <span style="background:#f7b731"></span>
+          <span style="background:#38d9a9"></span>
+        </div>
+        <span id="code-filename">bito_client.py</span>
+        <button class="copy-btn" style="position:static" onclick="copyCode()" data-i18n="copyBtn">Copy</button>
+      </div>
+      <pre id="code-display"></pre>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     REFERENCE
+═══════════════════════════════════════════════════ -->
+<div class="panel" id="panel-reference">
+  <div class="section-title" data-i18n="refTitle">Bito API — Endpoint Reference</div>
+  <p class="section-sub" data-i18n="refSub">Key endpoints students will use. All require the <code style="color:var(--accent2)">api-key</code> header.</p>
+
+  <div id="ref-table"></div>
+</div>
+
+</main>
+
+<script>
+// ── i18n ──────────────────────────────────────────────────────────────────
+
+const LANGS = {
+  en: {
+    flag: "🇬🇧", label: "EN",
+    badge: "Teaching Tool",
+    tab1: "Part 1 — AI Code Generation", tab2: "Part 2 — Connect Your Business Data", tab3: "API Reference",
+    lesson1tag: "Lesson 1", lesson2tag: "Lesson 2",
+    p1title: "Part 1 — AI generates the code for you",
+    p1sub: "Students learn to prompt an AI (Claude / ChatGPT) to generate a complete Bito sync script using only the <strong>public API spec</strong> — no company data, no private keys, nothing sensitive.",
+    step: "Step", flow1: "Pick data type", flow2: "Generate prompt", flow3: "Paste into AI", flow4: "Get working code",
+    privacyLabel: "Privacy rule (teach this first):",
+    privacyText: "When using AI to generate code, you NEVER share your API key, company name, customer data, or any real business information. The AI only needs the public API spec — which is safe to share.",
+    step1card: "Step 1 — What data do you want?",
+    step2card: "Step 2 — What to exclude (privacy settings)",
+    step2hint: "Toggle ON the fields that contain sensitive personal data — the prompt will tell the AI to exclude them.",
+    genBtn: "Generate AI Prompt",
+    promptCard: "Generated Prompt — paste this into Claude or ChatGPT",
+    promptPlaceholder: "Select a data type above and click Generate.",
+    copyBtn: "Copy", noSensitive: "✓ No sensitive fields in this data type",
+    p2title: "Part 2 — Edit the code for your business",
+    p2sub: "Students take the AI-generated code and make 3 targeted edits to connect it to their own Bito account — without leaking any data in the process.",
+    edit3title: "The 3 things students need to change",
+    edit1h: "① Add your API key (in .env only)",
+    edit1l1: "Never put the key directly in the code", edit1l2: "Create a <strong>.env file</strong> on your machine",
+    edit1l3: "Add: <code style=\"color:var(--accent2)\">BITO_API_KEY=your_key</code>", edit1l4: ".env files stay local — never uploaded or shared",
+    edit2h: "② Choose which data to sync",
+    edit2l1: "Open <strong>sync_runner.py</strong>", edit2l2: "Set <strong>True/False</strong> next to each data type",
+    edit2l3: "Only enable what your dashboard needs", edit2l4: "Less data = faster sync + better privacy",
+    edit3h: "③ Check what fields you export",
+    edit3l1: "Open <strong>bito_client.py</strong>", edit3l2: "Find the function for your data type",
+    edit3l3: "Remove any fields you don't need", edit3l4: "Personal fields (phone, address) are already excluded",
+    edit4h: "✓ What never changes",
+    edit4l1: "The API endpoints stay the same for everyone", edit4l2: "The CSV output format stays the same",
+    edit4l3: "Power BI connection stays the same", edit4l4: "Only credentials + field selection are personal",
+    codeCard: "Step-by-step code — select what you need",
+    refTitle: "Bito API — Endpoint Reference",
+    refSub: "Key endpoints students will use. All require the <code style=\"color:var(--accent2)\">api-key</code> header.",
+    sensitiveLabel: "⚠ Sensitive fields:",
+    promptRole: "You are a Python developer. Write a script to pull {name} data from the Bito 2.0 API and save it as a CSV file.",
+    promptDetails: "API details:",
+    promptBaseUrl: "Base URL: https://api.bito.uz/integration-api/integration/api/v2",
+    promptAuth: "Authentication: HTTP header  api-key: <API_KEY>",
+    promptEndpoint: "Endpoint:", promptPurpose: "Purpose:",
+    promptReq: "Requirements:",
+    promptReqLines: ["Use the requests library","Handle pagination automatically (keep fetching until all records are retrieved)","Load the API key from a .env file using python-dotenv (never hardcode it)","Save output to a CSV file called {id}.csv","Add clear comments explaining each section","Add basic error handling (try/except for network errors)"],
+    promptExclude: "- Exclude these sensitive fields:",
+    promptFooter: "Only include fields relevant for a Power BI business dashboard.\nDo not add any cloud upload or external service calls — the CSV stays local.",
+    selectFirst: "Please select a data type first.",
+    copied: "Copied!",
+    epNames: { sales:"Sales / Trades", products:"Products", stock:"Inventory / Stock", customers:"Customers", orders:"Sale Orders", purchases:"Purchases", report:"Sales by Product", warehouses:"Warehouses" },
+    epDescs: { sales:"All transactions, revenue, daily totals", products:"Full product catalog with SKUs and barcodes", stock:"Current stock levels per warehouse", customers:"Customer list for segmentation", orders:"Pending orders / sales pipeline", purchases:"Incoming stock from suppliers", report:"Built-in report: revenue per product", warehouses:"Warehouse list (lookup table)" },
+    dtLabels: { sales:"Sales", products:"Products", stock:"Inventory", customers:"Customers", report:"Sales Report" },
+  },
+
+  uz: {
+    flag: "🇺🇿", label: "UZ",
+    badge: "O'quv Vositasi",
+    tab1: "1-qism — AI Kodni Yaratadi", tab2: "2-qism — O'z Biznes Ma'lumotlarini Ulang", tab3: "API Ma'lumotnomasi",
+    lesson1tag: "1-dars", lesson2tag: "2-dars",
+    p1title: "1-qism — AI siz uchun kodni yozadi",
+    p1sub: "Talabalar faqat <strong>ochiq API spetsifikatsiyasi</strong>dan foydalanib, AI (Claude / ChatGPT)ni to'liq Bito sinxronlash skriptini yaratishga yo'naltiradi — hech qanday kompaniya ma'lumotlari, shaxsiy kalitlar yoki maxfiy ma'lumotlarsiz.",
+    step: "Qadam", flow1: "Ma'lumot turini tanlang", flow2: "Prompt yarating", flow3: "AIga joylashtiring", flow4: "Tayyor kodni oling",
+    privacyLabel: "Maxfiylik qoidasi (avval o'rgating):",
+    privacyText: "AI yordamida kod yaratishda siz HECH QACHON API kalitingizni, kompaniya nomingizni, mijoz ma'lumotlarini yoki haqiqiy biznes ma'lumotlarini ulashmaysiz. AIga faqat ochiq API spetsifikatsiyasi kerak — uni ulashish xavfsiz.",
+    step1card: "1-qadam — Qanday ma'lumot kerak?",
+    step2card: "2-qadam — Nimani chiqarib tashlash kerak (maxfiylik sozlamalari)",
+    step2hint: "Shaxsiy maxfiy ma'lumotlar mavjud maydonlarni YOQING — prompt AI ga ularni chiqarib tashlashni aytadi.",
+    genBtn: "AI Promptini Yaratish",
+    promptCard: "Yaratilgan Prompt — Claude yoki ChatGPTga joylashtiring",
+    promptPlaceholder: "Yuqoridan ma'lumot turini tanlang va Yaratish tugmasini bosing.",
+    copyBtn: "Nusxa", noSensitive: "✓ Bu ma'lumot turida maxfiy maydonlar yo'q",
+    p2title: "2-qism — Kodni o'z biznesingiz uchun tahrirlang",
+    p2sub: "Talabalar AI tomonidan yaratilgan kodni olib, unda 3 ta maqsadli o'zgartirish kiritib, o'z Bito hisobiga ulashtiradi — hech qanday ma'lumot sirtga chiqmaydi.",
+    edit3title: "Talabalar o'zgartirishi kerak bo'lgan 3 ta narsa",
+    edit1h: "① API kalitingizni qo'shing (faqat .env da)",
+    edit1l1: "Kalitni to'g'ridan-to'g'ri kodga qo'ymang", edit1l2: "Kompyuteringizda <strong>.env fayl</strong> yarating",
+    edit1l3: "Qo'shing: <code style=\"color:var(--accent2)\">BITO_API_KEY=your_key</code>", edit1l4: ".env fayllari lokal qoladi — hech qachon yuklanmaydi yoki ulashilmaydi",
+    edit2h: "② Qaysi ma'lumotlarni sinxronlashni tanlang",
+    edit2l1: "<strong>sync_runner.py</strong> faylini oching", edit2l2: "Har bir ma'lumot turi yoniga <strong>True/False</strong> qo'ying",
+    edit2l3: "Faqat dashboardingiz uchun kerakligini yoqing", edit2l4: "Kam ma'lumot = tezroq sinxronlash + yaxshiroq maxfiylik",
+    edit3h: "③ Qaysi maydonlarni eksport qilishingizni tekshiring",
+    edit3l1: "<strong>bito_client.py</strong> faylini oching", edit3l2: "Ma'lumot turingiz uchun funksiyani toping",
+    edit3l3: "Kerak bo'lmagan maydonlarni o'chiring", edit3l4: "Shaxsiy maydonlar (telefon, manzil) allaqachon chiqarib tashlangan",
+    edit4h: "✓ Hech qachon o'zgarmaydigan narsalar",
+    edit4l1: "API endpointlari hamma uchun bir xil", edit4l2: "CSV chiqish formati bir xil qoladi",
+    edit4l3: "Power BI ulanishi bir xil qoladi", edit4l4: "Faqat hisob ma'lumotlari + maydon tanlash shaxsiy",
+    codeCard: "Qadam-baqadam kod — kerakligini tanlang",
+    refTitle: "Bito API — Endpoint Ma'lumotnomasi",
+    refSub: "Talabalar foydalanadigan asosiy endpointlar. Barchasi <code style=\"color:var(--accent2)\">api-key</code> sarlavhasini talab qiladi.",
+    sensitiveLabel: "⚠ Maxfiy maydonlar:",
+    promptRole: "Siz Python dasturchisisiz. Bito 2.0 API dan {name} ma'lumotlarini olib, CSV fayliga saqlaydigan skript yozing.",
+    promptDetails: "API tafsilotlari:",
+    promptBaseUrl: "Asosiy URL: https://api.bito.uz/integration-api/integration/api/v2",
+    promptAuth: "Autentifikatsiya: HTTP sarlavhasi  api-key: <API_KEY>",
+    promptEndpoint: "Endpoint:", promptPurpose: "Maqsad:",
+    promptReq: "Talablar:",
+    promptReqLines: ["requests kutubxonasidan foydalaning","Sahifalashni avtomatik boshqaring (barcha yozuvlar olinmaguncha davom eting)","API kalitini python-dotenv yordamida .env fayldan yuklang (kodga to'g'ridan-to'g'ri yozmang)","Natijani {id}.csv fayliga saqlang","Har bir bo'limni tushuntiradigan izohlar qo'shing","Tarmoq xatoliklari uchun try/except qo'shing"],
+    promptExclude: "- Quyidagi maxfiy maydonlarni chiqarib tashlang:",
+    promptFooter: "Faqat Power BI biznes dashboardi uchun kerakli maydonlarni qo'shing.\nHech qanday bulut yuklash yoki tashqi xizmat chaqiruvlarini qo'shmang — CSV lokal qoladi.",
+    selectFirst: "Iltimos, avval ma'lumot turini tanlang.",
+    copied: "Nusxalandi!",
+    epNames: { sales:"Savdo / Tranzaksiyalar", products:"Mahsulotlar", stock:"Ombor / Qoldiq", customers:"Mijozlar", orders:"Savdo Buyurtmalari", purchases:"Xaridlar", report:"Mahsulot bo'yicha Savdo", warehouses:"Omborlar" },
+    epDescs: { sales:"Barcha tranzaksiyalar, daromad, kunlik jami", products:"SKU va shtrix-kodlar bilan mahsulot katalogi", stock:"Ombor bo'yicha joriy qoldiq miqdorlari", customers:"Segmentatsiya uchun mijozlar ro'yxati", orders:"Kutilayotgan buyurtmalar / savdo quvuri", purchases:"Ta'minotchilardan kelayotgan tovar", report:"O'rnatilgan hisobot: mahsulot bo'yicha daromad", warehouses:"Ombor ro'yxati (qidirish jadvali)" },
+    dtLabels: { sales:"Savdo", products:"Mahsulotlar", stock:"Ombor", customers:"Mijozlar", report:"Savdo Hisoboti" },
+  },
+
+  ru: {
+    flag: "🇷🇺", label: "RU",
+    badge: "Учебный Инструмент",
+    tab1: "Часть 1 — AI Генерирует Код", tab2: "Часть 2 — Подключите Свои Данные", tab3: "Справочник API",
+    lesson1tag: "Урок 1", lesson2tag: "Урок 2",
+    p1title: "Часть 1 — AI пишет код за вас",
+    p1sub: "Студенты учатся задавать AI (Claude / ChatGPT) задачу на генерацию скрипта синхронизации Bito, используя только <strong>публичную спецификацию API</strong> — без данных компании, ключей и конфиденциальной информации.",
+    step: "Шаг", flow1: "Выберите тип данных", flow2: "Сгенерируйте промпт", flow3: "Вставьте в AI", flow4: "Получите готовый код",
+    privacyLabel: "Правило конфиденциальности (объясните сначала):",
+    privacyText: "При генерации кода с помощью AI вы НИКОГДА не передаёте свой API-ключ, название компании, данные клиентов или любую реальную бизнес-информацию. AI нужна только публичная спецификация API — её безопасно передавать.",
+    step1card: "Шаг 1 — Какие данные нужны?",
+    step2card: "Шаг 2 — Что исключить (настройки конфиденциальности)",
+    step2hint: "Включите поля, содержащие персональные данные — промпт скажет AI исключить их.",
+    genBtn: "Сгенерировать Промпт для AI",
+    promptCard: "Готовый Промпт — вставьте в Claude или ChatGPT",
+    promptPlaceholder: "Выберите тип данных выше и нажмите Сгенерировать.",
+    copyBtn: "Копировать", noSensitive: "✓ В этом типе данных нет конфиденциальных полей",
+    p2title: "Часть 2 — Отредактируйте код под свой бизнес",
+    p2sub: "Студенты берут сгенерированный AI код и вносят 3 целевых правки для подключения к своему аккаунту Bito — без утечки данных.",
+    edit3title: "3 вещи, которые нужно изменить студентам",
+    edit1h: "① Добавьте API-ключ (только в .env)",
+    edit1l1: "Никогда не вставляйте ключ прямо в код", edit1l2: "Создайте файл <strong>.env</strong> на своём компьютере",
+    edit1l3: "Добавьте: <code style=\"color:var(--accent2)\">BITO_API_KEY=your_key</code>", edit1l4: "Файлы .env остаются локально — никогда не загружаются",
+    edit2h: "② Выберите, какие данные синхронизировать",
+    edit2l1: "Откройте <strong>sync_runner.py</strong>", edit2l2: "Установите <strong>True/False</strong> рядом с каждым типом данных",
+    edit2l3: "Включайте только то, что нужно дашборду", edit2l4: "Меньше данных = быстрее синхронизация + лучше конфиденциальность",
+    edit3h: "③ Проверьте экспортируемые поля",
+    edit3l1: "Откройте <strong>bito_client.py</strong>", edit3l2: "Найдите функцию для вашего типа данных",
+    edit3l3: "Удалите ненужные поля", edit3l4: "Персональные поля (телефон, адрес) уже исключены",
+    edit4h: "✓ Что никогда не меняется",
+    edit4l1: "Эндпоинты API одинаковы для всех", edit4l2: "Формат CSV остаётся одинаковым",
+    edit4l3: "Подключение Power BI остаётся одинаковым", edit4l4: "Только учётные данные + выбор полей — личные",
+    codeCard: "Пошаговый код — выберите что нужно",
+    refTitle: "Bito API — Справочник Эндпоинтов",
+    refSub: "Основные эндпоинты для студентов. Все требуют заголовок <code style=\"color:var(--accent2)\">api-key</code>.",
+    sensitiveLabel: "⚠ Конфиденциальные поля:",
+    promptRole: "Вы Python-разработчик. Напишите скрипт для получения данных {name} из Bito 2.0 API и сохранения в CSV-файл.",
+    promptDetails: "Детали API:",
+    promptBaseUrl: "Базовый URL: https://api.bito.uz/integration-api/integration/api/v2",
+    promptAuth: "Аутентификация: HTTP заголовок  api-key: <API_KEY>",
+    promptEndpoint: "Эндпоинт:", promptPurpose: "Назначение:",
+    promptReq: "Требования:",
+    promptReqLines: ["Используйте библиотеку requests","Автоматически обрабатывайте пагинацию (получайте все записи)","Загружайте API-ключ из файла .env через python-dotenv (не хардкодьте)","Сохраняйте результат в CSV-файл {id}.csv","Добавьте понятные комментарии к каждому разделу","Добавьте базовую обработку ошибок (try/except для сетевых ошибок)"],
+    promptExclude: "- Исключите следующие конфиденциальные поля:",
+    promptFooter: "Включайте только поля, нужные для бизнес-дашборда Power BI.\nНе добавляйте загрузку в облако или вызовы внешних сервисов — CSV остаётся локально.",
+    selectFirst: "Пожалуйста, сначала выберите тип данных.",
+    copied: "Скопировано!",
+    epNames: { sales:"Продажи / Сделки", products:"Товары", stock:"Склад / Остатки", customers:"Клиенты", orders:"Заказы на Продажу", purchases:"Закупки", report:"Продажи по Товарам", warehouses:"Склады" },
+    epDescs: { sales:"Все транзакции, выручка, дневные итоги", products:"Полный каталог товаров с SKU и штрих-кодами", stock:"Текущие остатки по складам", customers:"Список клиентов для сегментации", orders:"Ожидающие заказы / воронка продаж", purchases:"Входящий товар от поставщиков", report:"Встроенный отчёт: выручка по товарам", warehouses:"Список складов (справочная таблица)" },
+    dtLabels: { sales:"Продажи", products:"Товары", stock:"Склад", customers:"Клиенты", report:"Отчёт по продажам" },
+  }
+};
+
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  const t = LANGS[lang];
+
+  // Update dropdown button
+  document.getElementById("currentFlag").textContent = t.flag;
+  document.getElementById("currentLangLabel").textContent = t.label;
+  document.querySelectorAll(".lang-option").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll(".lang-option").forEach(el => {
+    if (el.textContent.trim().startsWith(t.flag)) el.classList.add("active");
+  });
+
+  // Translate all data-i18n elements
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+
+  // Re-render dynamic sections
+  document.getElementById("endpoint-grid").innerHTML = "";
+  document.getElementById("privacy-grid").innerHTML = "";
+  document.getElementById("data-selector").innerHTML = "";
+  document.getElementById("ref-table").innerHTML = "";
+  selectedEndpoint = null;
+  initEndpointGrid();
+  initDataSelector();
+  initReference();
+
+  // Close menu
+  document.getElementById("langSelector").classList.remove("open");
+}
+
+function toggleLangMenu(e) {
+  e.stopPropagation();
+  document.getElementById("langSelector").classList.toggle("open");
+}
+document.addEventListener("click", () => {
+  document.getElementById("langSelector").classList.remove("open");
+});
+
+
+
+// ── Data ──────────────────────────────────────────────────────────────────
+
+const ENDPOINT_IDS = [
+  { id: "sales",      endpoint: "POST /trade/get-paging",         sensitive: ["customer_phone", "cashier_name"] },
+  { id: "products",   endpoint: "POST /product/get-paging",       sensitive: ["supplier_contact"] },
+  { id: "stock",      endpoint: "POST /product-stock/get-paging", sensitive: [] },
+  { id: "customers",  endpoint: "POST /customer/get-paging",      sensitive: ["phone_number", "address", "passport_id"] },
+  { id: "orders",     endpoint: "POST /sale-order/get-paging",    sensitive: ["customer_phone"] },
+  { id: "purchases",  endpoint: "POST /purchase/get-paging",      sensitive: ["supplier_phone"] },
+  { id: "report",     endpoint: "POST /sales/by-item",            sensitive: [] },
+  { id: "warehouses", endpoint: "POST /warehouse/get-all",        sensitive: [] },
+];
+
+function getEndpoints() {
+  const t = LANGS[currentLang];
+  return ENDPOINT_IDS.map(e => ({
+    ...e, name: t.epNames[e.id] || e.id, desc: t.epDescs[e.id] || "",
+  }));
+}
+
+function getDataTypes() {
+  const t = LANGS[currentLang];
+  return [
+    { id: "sales",     label: t.dtLabels.sales },
+    { id: "products",  label: t.dtLabels.products },
+    { id: "stock",     label: t.dtLabels.stock },
+    { id: "customers", label: t.dtLabels.customers },
+    { id: "report",    label: t.dtLabels.report },
+  ];
+}
+
+
+
+const CODE_SNIPPETS = {
+  sales: {
+    filename: "bito_client.py — fetch_sales()",
+    code: `<span class="cm"># ── Pull sales data from Bito ──────────────────────────
+# Endpoint: POST /trade/get-paging
+# Use for:  revenue charts, daily sales, cashier reports
+# Privacy:  customer phone numbers are excluded</span>
+
+<span class="kw">def</span> <span class="fn">fetch_sales</span>(date_from=<span class="kw">None</span>, date_to=<span class="kw">None</span>):
+    extra = {}
+    <span class="kw">if</span> date_from:
+        extra[<span class="str">"date_from"</span>] = date_from
+    <span class="kw">if</span> date_to:
+        extra[<span class="str">"date_to"</span>] = date_to
+
+    raw = _fetch_all_pages(<span class="str">"/trade/get-paging"</span>, extra=extra)
+
+    cleaned = []
+    <span class="kw">for</span> t <span class="kw">in</span> raw:
+        cleaned.append({
+            <span class="str">"trade_id"</span>:      t.get(<span class="str">"_id"</span>, <span class="str">""</span>),
+            <span class="str">"date"</span>:          (t.get(<span class="str">"created_at"</span>) <span class="kw">or</span> <span class="str">""</span>)[:<span class="num">10</span>],
+            <span class="str">"total_amount"</span>:  t.get(<span class="str">"total_amount"</span>, <span class="num">0</span>),
+            <span class="str">"paid_amount"</span>:   t.get(<span class="str">"paid_amount"</span>, <span class="num">0</span>),
+            <span class="str">"discount"</span>:      t.get(<span class="str">"discount"</span>, <span class="num">0</span>),
+            <span class="str">"status"</span>:        t.get(<span class="str">"state"</span>, <span class="str">""</span>),
+            <span class="str">"cashier_id"</span>:    t.get(<span class="str">"created_by"</span>, <span class="str">""</span>),  <span class="cm"># ID only</span>
+            <span class="str">"warehouse_id"</span>:  t.get(<span class="str">"warehouse_id"</span>, <span class="str">""</span>),
+            <span class="str">"items_count"</span>:   <span class="fn">len</span>(t.get(<span class="str">"items"</span>, [])),
+            <span class="cm"># EXCLUDED: customer phone, cashier full name</span>
+        })
+
+    <span class="kw">return</span> _save_csv(cleaned, <span class="str">"trades.csv"</span>)
+
+<span class="cm"># HOW TO EDIT FOR YOUR BUSINESS:
+# 1. Add date range filter:
+#    fetch_sales(date_from="2024-01-01", date_to="2024-12-31")
+# 2. Add/remove fields from the cleaned dict
+# 3. Change the output filename if needed</span>`
+  },
+  products: {
+    filename: "bito_client.py — fetch_products()",
+    code: `<span class="cm"># ── Pull product catalog from Bito ──────────────────
+# Endpoint: POST /product/get-paging
+# Use for:  product list, top sellers, price analysis
+# Privacy:  supplier contact info excluded</span>
+
+<span class="kw">def</span> <span class="fn">fetch_products</span>():
+    raw = _fetch_all_pages(<span class="str">"/product/get-paging"</span>)
+
+    cleaned = []
+    <span class="kw">for</span> p <span class="kw">in</span> raw:
+        cleaned.append({
+            <span class="str">"product_id"</span>:  p.get(<span class="str">"_id"</span>, <span class="str">""</span>),
+            <span class="str">"name"</span>:        p.get(<span class="str">"name"</span>, <span class="str">""</span>),
+            <span class="str">"sku"</span>:         p.get(<span class="str">"sku"</span>, <span class="str">""</span>),
+            <span class="str">"barcode"</span>:     p.get(<span class="str">"barcode"</span>, <span class="str">""</span>),
+            <span class="str">"category_id"</span>: p.get(<span class="str">"category_id"</span>, <span class="str">""</span>),
+            <span class="str">"is_active"</span>:   p.get(<span class="str">"is_active"</span>, <span class="kw">True</span>),
+            <span class="cm"># EXCLUDED: supplier contact info</span>
+        })
+
+    <span class="kw">return</span> _save_csv(cleaned, <span class="str">"products.csv"</span>)
+
+<span class="cm"># HOW TO EDIT FOR YOUR BUSINESS:
+# 1. Add price field if your Bito has it:
+#    "price": p.get("price", 0),
+# 2. Filter only active products:
+#    cleaned = [r for r in cleaned if r["is_active"]]
+# 3. Add your own custom fields from Bito</span>`
+  },
+  stock: {
+    filename: "bito_client.py — fetch_stock()",
+    code: `<span class="cm"># ── Pull inventory / stock levels from Bito ─────────
+# Endpoint: POST /product-stock/get-paging
+# Use for:  stock alerts, warehouse levels, reorder points
+# Privacy:  no personal data in stock records</span>
+
+<span class="kw">def</span> <span class="fn">fetch_stock</span>():
+    raw = _fetch_all_pages(<span class="str">"/product-stock/get-paging"</span>)
+
+    cleaned = []
+    <span class="kw">for</span> s <span class="kw">in</span> raw:
+        cleaned.append({
+            <span class="str">"product_id"</span>:   s.get(<span class="str">"product_id"</span>, <span class="str">""</span>),
+            <span class="str">"product_name"</span>: s.get(<span class="str">"product"</span>, {}).get(<span class="str">"name"</span>, <span class="str">""</span>),
+            <span class="str">"warehouse_id"</span>: s.get(<span class="str">"warehouse_id"</span>, <span class="str">""</span>),
+            <span class="str">"quantity"</span>:     s.get(<span class="str">"amount"</span>, <span class="num">0</span>),
+            <span class="str">"reserved"</span>:     s.get(<span class="str">"reserved"</span>, <span class="num">0</span>),
+            <span class="str">"available"</span>:    s.get(<span class="str">"available"</span>, <span class="num">0</span>),
+        })
+
+    <span class="kw">return</span> _save_csv(cleaned, <span class="str">"stock.csv"</span>)
+
+<span class="cm"># HOW TO EDIT FOR YOUR BUSINESS:
+# 1. Add a low-stock flag in Power BI using:
+#    available < 10  → Low Stock
+# 2. Filter a specific warehouse only:
+#    raw = _fetch_all_pages("/product-stock/get-paging",
+#          extra={"warehouse_id": "YOUR_WAREHOUSE_ID"})
+# 3. Add your reorder threshold as a column</span>`
+  },
+  customers: {
+    filename: "bito_client.py — fetch_customers()",
+    code: `<span class="cm"># ── Pull customer list from Bito ──────────────────────
+# Endpoint: POST /customer/get-paging
+# Use for:  customer segments, top customers, retention
+#
+# ⚠ PRIVACY: Phone numbers and addresses are EXCLUDED.
+# We only pull business-relevant fields.
+# This is the key thing to teach!</span>
+
+<span class="kw">def</span> <span class="fn">fetch_customers</span>():
+    raw = _fetch_all_pages(<span class="str">"/customer/get-paging"</span>)
+
+    cleaned = []
+    <span class="kw">for</span> c <span class="kw">in</span> raw:
+        cleaned.append({
+            <span class="str">"customer_id"</span>:      c.get(<span class="str">"_id"</span>, <span class="str">""</span>),
+            <span class="str">"name"</span>:              c.get(<span class="str">"name"</span>, <span class="str">""</span>),
+            <span class="str">"category_id"</span>:       c.get(<span class="str">"category_id"</span>, <span class="str">""</span>),
+            <span class="str">"balance"</span>:           c.get(<span class="str">"balance"</span>, <span class="num">0</span>),
+            <span class="str">"cashback_balance"</span>:  c.get(<span class="str">"cashback_balance"</span>, <span class="num">0</span>),
+            <span class="str">"state"</span>:             c.get(<span class="str">"state"</span>, <span class="str">"active"</span>),
+            <span class="str">"created_date"</span>:      (c.get(<span class="str">"created_at"</span>) <span class="kw">or</span> <span class="str">""</span>)[:<span class="num">10</span>],
+
+            <span class="cm"># ❌ EXCLUDED (personal data — do not add these):
+            # "phone_number": ...
+            # "address": ...
+            # "passport_id": ...</span>
+        })
+
+    <span class="kw">return</span> _save_csv(cleaned, <span class="str">"customers.csv"</span>)
+
+<span class="cm"># HOW TO EDIT FOR YOUR BUSINESS:
+# 1. Add customer name only if allowed by your privacy policy
+# 2. Use customer_id to JOIN with sales data in Power BI
+#    (never need personal data for that)</span>`
+  },
+  report: {
+    filename: "bito_client.py — fetch_report_sales_by_item()",
+    code: `<span class="cm"># ── Pull built-in Bito sales report ──────────────────
+# Endpoint: POST /sales/by-item
+# Use for:  best-selling products, revenue by category
+# Note:     This is Bito's own aggregated report —
+#           no personal data, already summarized</span>
+
+<span class="kw">def</span> <span class="fn">fetch_report_sales_by_item</span>(date_from=<span class="kw">None</span>, date_to=<span class="kw">None</span>):
+    url  = <span class="fn">f</span><span class="str">"{BASE_URL}/sales/by-item"</span>
+    body = {}
+    <span class="kw">if</span> date_from:
+        body[<span class="str">"date_from"</span>] = date_from
+    <span class="kw">if</span> date_to:
+        body[<span class="str">"date_to"</span>] = date_to
+
+    r = requests.post(url, headers=_headers(), json=body, timeout=<span class="num">20</span>)
+    r.raise_for_status()
+    raw = r.json().get(<span class="str">"data"</span>, [])
+
+    cleaned = []
+    <span class="kw">for</span> item <span class="kw">in</span> raw:
+        cleaned.append({
+            <span class="str">"product_id"</span>:    item.get(<span class="str">"product_id"</span>, <span class="str">""</span>),
+            <span class="str">"product_name"</span>:  item.get(<span class="str">"product_name"</span>, <span class="str">""</span>),
+            <span class="str">"category"</span>:      item.get(<span class="str">"category_name"</span>, <span class="str">""</span>),
+            <span class="str">"quantity_sold"</span>: item.get(<span class="str">"quantity"</span>, <span class="num">0</span>),
+            <span class="str">"total_revenue"</span>: item.get(<span class="str">"total_amount"</span>, <span class="num">0</span>),
+            <span class="str">"avg_price"</span>:     item.get(<span class="str">"avg_price"</span>, <span class="num">0</span>),
+        })
+
+    <span class="kw">return</span> _save_csv(cleaned, <span class="str">"report_sales_by_item.csv"</span>)
+
+<span class="cm"># HOW TO EDIT FOR YOUR BUSINESS:
+# 1. Filter by this month:
+#    from datetime import date
+#    today = date.today()
+#    fetch_report_sales_by_item(
+#        date_from=f"{today.year}-{today.month:02d}-01",
+#        date_to=str(today))
+# 2. Sort in Power BI by total_revenue descending
+#    → instant Top 10 products chart</span>`
+  },
+};
+
+// ── Init ──────────────────────────────────────────────────────────────────
+
+let selectedEndpoint = null;
+let selectedSensitive = new Set();
+
+function initEndpointGrid() {
+  const grid = document.getElementById("endpoint-grid");
+  getEndpoints().forEach(ep => {
+    const btn = document.createElement("div");
+    btn.className = "endpoint-btn";
+    btn.id = "ep-" + ep.id;
+    btn.innerHTML = `<div class="ep-name">${ep.name}</div><div class="ep-desc">${ep.desc}</div>`;
+    btn.onclick = () => selectEndpoint(ep);
+    grid.appendChild(btn);
+  });
+}
+
+function selectEndpoint(ep) {
+  selectedEndpoint = ep;
+  selectedSensitive = new Set();
+  document.querySelectorAll(".endpoint-btn").forEach(b => b.classList.remove("selected"));
+  document.getElementById("ep-" + ep.id).classList.add("selected");
+
+  const pg = document.getElementById("privacy-grid");
+  pg.innerHTML = "";
+  if (ep.sensitive.length === 0) {
+    pg.innerHTML = `<span style="color:var(--accent2);font-size:12px">${LANGS[currentLang].noSensitive}</span>`;
+  } else {
+    ep.sensitive.forEach(field => {
+      const pill = document.createElement("label");
+      pill.className = "toggle-pill on";
+      pill.innerHTML = `<input type="checkbox" checked><span class="dot"></span>${field}`;
+      selectedSensitive.add(field);
+      pill.querySelector("input").onchange = (e) => {
+        if (e.target.checked) selectedSensitive.add(field);
+        else selectedSensitive.delete(field);
+        pill.classList.toggle("on", e.target.checked);
+      };
+      pg.appendChild(pill);
+    });
+  }
+}
+
+function toggleSensitive(field, checked) {
+  if (checked) selectedSensitive.add(field);
+  else selectedSensitive.delete(field);
+}
+
+function generatePrompt() {
+  const t = LANGS[currentLang];
+  if (!selectedEndpoint) {
+    document.getElementById("prompt-output").innerHTML =
+      `<span style="color:var(--warn)">${t.selectFirst}</span><button class="copy-btn" onclick="copyPrompt()">${t.copyBtn}</button>`;
+    return;
+  }
+  const ep = selectedEndpoint;
+  const excluded = [...selectedSensitive];
+  const excludeLine = excluded.length > 0 ? `\n${t.promptExclude} ${excluded.join(", ")}` : "";
+  const reqLines = t.promptReqLines.map(l => `- ${l.replace("{id}", ep.id)}`).join("\n");
+
+  const prompt =
+`${t.promptRole.replace("{name}", ep.name)}
+
+${t.promptDetails}
+- ${t.promptBaseUrl}
+- ${t.promptAuth}
+- ${t.promptEndpoint} ${ep.endpoint}
+- ${t.promptPurpose} ${ep.desc}
+
+${t.promptReq}
+${reqLines}${excludeLine}
+
+${t.promptFooter}`;
+
+  document.getElementById("prompt-output").textContent = prompt;
+  const btn = document.createElement("button");
+  btn.className = "copy-btn";
+  btn.textContent = t.copyBtn;
+  btn.onclick = copyPrompt;
+  document.getElementById("prompt-output").appendChild(btn);
+}
+
+function copyPrompt() {
+  const t = LANGS[currentLang];
+  const text = document.getElementById("prompt-output").textContent;
+  navigator.clipboard.writeText(text).then(() => alert(t.copied));
+}
+
+// ── Part 2 code display ───────────────────────────────────────────────────
+
+let activeCode = "sales";
+
+function initDataSelector() {
+  const sel = document.getElementById("data-selector");
+  getDataTypes().forEach(d => {
+    const btn = document.createElement("button");
+    btn.className = "data-btn" + (d.id === activeCode ? " active" : "");
+    btn.textContent = d.label;
+    btn.onclick = () => showCode(d.id, btn);
+    sel.appendChild(btn);
+  });
+  const activeBtn = sel.querySelector(".active");
+  if (activeBtn) showCode(activeCode, activeBtn);
+}
+
+function showCode(id, btn) {
+  activeCode = id;
+  document.querySelectorAll(".data-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  const snippet = CODE_SNIPPETS[id];
+  document.getElementById("code-display").innerHTML = snippet.code;
+  document.getElementById("code-filename").textContent = snippet.filename;
+}
+
+function copyCode() {
+  const t = LANGS[currentLang];
+  const text = document.getElementById("code-display").innerText;
+  navigator.clipboard.writeText(text).then(() => alert(t.copied));
+}
+
+// ── Reference table ───────────────────────────────────────────────────────
+
+function initReference() {
+  const t = LANGS[currentLang];
+  const container = document.getElementById("ref-table");
+  getEndpoints().forEach(ep => {
+    const method = ep.endpoint.split(" ")[0];
+    const path   = ep.endpoint.split(" ")[1];
+    container.innerHTML += `
+      <div class="card" style="margin-bottom:12px;padding:16px 20px">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <span style="background:rgba(79,156,249,0.15);color:var(--accent);font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:4px">${method}</span>
+          <code style="font-family:var(--mono);font-size:12px;color:var(--accent2)">${path}</code>
+          <span style="color:var(--muted);font-size:12px;margin-left:auto">${ep.name}</span>
+        </div>
+        <div style="color:var(--muted);font-size:12px;margin-top:8px">${ep.desc}</div>
+        ${ep.sensitive.length ? `<div style="color:var(--warn);font-size:11px;margin-top:6px">${t.sensitiveLabel} ${ep.sensitive.join(", ")}</div>` : ""}
+      </div>`;
+  });
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+
+function showTab(id) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("panel-" + id).classList.add("active");
+  event.target.closest(".tab").classList.add("active");
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+initEndpointGrid();
+initDataSelector();
+initReference();
+</script>
+</body>
+</html>
