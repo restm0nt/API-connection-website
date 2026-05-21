@@ -469,11 +469,36 @@ function downloadTemplate(type) {
     transactions: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/transaction_sync_runner.py'
   };
   const filename = fileMap[type];
+  fetch(urls[type])
+    .then(r => r.blob())
+    .then(blob => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+}
+  const fileMap = {
+    sales: 'sales_sync_runner.py',
+    customers: 'customer_sync_runner.py',
+    products: 'product_sync_runner.py',
+    invoices: 'invoice_sync_runner.py',
+    transactions: 'transaction_sync_runner.py'
+  };
+  const urls = {
+    sales: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/sales_sync_runner.py',
+    customers: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/customer_sync_runner.py',
+    products: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/product_sync_runner.py',
+    invoices: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/invoice_sync_runner.py',
+    transactions: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/transaction_sync_runner.py'
+  };
+  const filename = fileMap[type];
   const a = document.createElement('a');
   a.href = urls[type];
   a.download = filename;
   a.click();
-}
+
 </script>
 </body>
 </html>
