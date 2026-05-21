@@ -300,7 +300,7 @@
       </div>
       <button class="dl-btn" onclick="downloadTemplate('sales')">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-en="Download sales_template.zip" data-uz="sales_template.zip yuklab olish" data-ru="Скачать sales_template.zip">Download sales_template.zip</span>
+        <span data-en="Download sales_sync_runner.py" data-uz="sales_sync_runner.py yuklab olish" data-ru="Скачать sales_sync_runner.py">Download sales_sync_runner.py</span>
       </button>
     </div>
 
@@ -317,7 +317,7 @@
       </div>
       <button class="dl-btn" onclick="downloadTemplate('customers')">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-en="Download customers_template.zip" data-uz="customers_template.zip yuklab olish" data-ru="Скачать customers_template.zip">Download customers_template.zip</span>
+        <span data-en="Download customer_sync_runner.py" data-uz="customer_sync_runner.py yuklab olish" data-ru="Скачать customer_sync_runner.py">Download customer_sync_runner.py</span>
       </button>
     </div>
 
@@ -334,7 +334,7 @@
       </div>
       <button class="dl-btn" onclick="downloadTemplate('products')">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-en="Download products_template.zip" data-uz="products_template.zip yuklab olish" data-ru="Скачать products_template.zip">Download products_template.zip</span>
+        <span data-en="Download product_sync_runner.py" data-uz="product_sync_runner.py yuklab olish" data-ru="Скачать product_sync_runner.py">Download product_sync_runner.py</span>
       </button>
     </div>
 
@@ -351,7 +351,7 @@
       </div>
       <button class="dl-btn" onclick="downloadTemplate('invoices')">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-en="Download invoices_template.zip" data-uz="invoices_template.zip yuklab olish" data-ru="Скачать invoices_template.zip">Download invoices_template.zip</span>
+        <span data-en="Download invoice_sync_runner.py" data-uz="invoice_sync_runner.py yuklab olish" data-ru="Скачать invoice_sync_runner.py">Download invoice_sync_runner.py</span>
       </button>
     </div>
 
@@ -369,7 +369,7 @@
       </div>
       <button class="dl-btn" onclick="downloadTemplate('transactions')">
         <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span data-en="Download transactions_template.zip" data-uz="transactions_template.zip yuklab olish" data-ru="Скачать transactions_template.zip">Download transactions_template.zip</span>
+        <span data-en="Download transaction_sync_runner.py" data-uz="transaction_sync_runner.py yuklab olish" data-ru="Скачать transaction_sync_runner.py">Download transaction_sync_runner.py</span>
       </button>
     </div>
 
@@ -454,19 +454,25 @@ function setOS(os, btn) {
 }
 
 function downloadTemplate(type) {
+  const fileMap = {
+    sales: 'sales_sync_runner.py',
+    customers: 'customer_sync_runner.py',
+    products: 'product_sync_runner.py',
+    invoices: 'invoice_sync_runner.py',
+    transactions: 'transaction_sync_runner.py'
+  };
   const urls = {
-    sales: 'https://raw.githubusercontent.com/example/bito-templates/main/sales_template.zip',
-    customers: 'https://raw.githubusercontent.com/example/bito-templates/main/customers_template.zip',
-    products: 'https://raw.githubusercontent.com/example/bito-templates/main/products_template.zip',
-    invoices: 'https://raw.githubusercontent.com/example/bito-templates/main/invoices_template.zip',
-    transactions: 'https://raw.githubusercontent.com/example/bito-templates/main/transactions_template.zip'
+    sales: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/sales_sync_runner.py',
+    customers: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/customer_sync_runner.py',
+    products: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/product_sync_runner.py',
+    invoices: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/invoice_sync_runner.py',
+    transactions: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/transaction_sync_runner.py'
   };
-  const msgs = {
-    en: `Template ready!\n\nThe ${type}_template.zip file contains:\n• sync_runner.py — run this\n• .env — paste your API key here\n• README.txt — 3-step instructions\n\nHost these files on your own server or GitHub and update the download links in this website's code.`,
-    uz: `Shablon tayyor!\n\n${type}_template.zip fayli quyidagilarni o'z ichiga oladi:\n• sync_runner.py — buni ishga tushiring\n• .env — API kalitingizni shu yerga joylashtiring\n• README.txt — 3 qadamli ko'rsatmalar\n\nBu fayllarni o'z serveringiz yoki GitHub da joylashtiring va veb-sayt kodidagi yuklab olish havolalarini yangilang.`,
-    ru: `Шаблон готов!\n\nФайл ${type}_template.zip содержит:\n• sync_runner.py — запустите его\n• .env — вставьте сюда ваш API-ключ\n• README.txt — инструкции в 3 шага\n\nРазместите эти файлы на вашем сервере или GitHub и обновите ссылки для скачивания в коде сайта.`
-  };
-  alert(msgs[currentLang]);
+  const filename = fileMap[type];
+  const a = document.createElement('a');
+  a.href = urls[type];
+  a.download = filename;
+  a.click();
 }
 </script>
 </body>
