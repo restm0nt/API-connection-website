@@ -33,7 +33,6 @@
   a{color:var(--blue);text-decoration:none}
   a:hover{text-decoration:underline}
 
-  /* Nav */
   nav{border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;background:var(--bg);position:sticky;top:0;z-index:100}
   .nav-brand{font-weight:600;font-size:15px;color:var(--text)}
   .nav-links{display:flex;gap:6px;align-items:center}
@@ -43,11 +42,9 @@
   .lang-btn{font-size:12px;padding:4px 10px;border:1px solid var(--border2);border-radius:6px;background:var(--bg);color:var(--text2);cursor:pointer}
   .lang-btn.active{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 
-  /* Pages */
   .page{display:none;max-width:780px;margin:0 auto;padding:3rem 2rem 5rem}
   .page.active{display:block}
 
-  /* Hero */
   .hero{text-align:center;padding:3rem 0 2.5rem}
   .hero h1{font-size:2rem;font-weight:600;margin-bottom:.75rem;line-height:1.2}
   .hero p{color:var(--text2);font-size:1rem;max-width:480px;margin:0 auto 2rem}
@@ -59,13 +56,11 @@
   .hero-card p{font-size:.85rem;color:var(--text2)}
   .hero-card .arrow{margin-top:1rem;font-size:.85rem;color:var(--blue)}
 
-  /* Section headings */
   .page-header{margin-bottom:2rem}
   .page-header .label{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem}
   .page-header h1{font-size:1.5rem;font-weight:600;margin-bottom:.4rem}
   .page-header p{color:var(--text2);font-size:.9rem}
 
-  /* Steps */
   .steps{display:flex;flex-direction:column;gap:1.25rem}
   .step{display:flex;gap:1rem;align-items:flex-start}
   .step-num{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--blue-bg);color:var(--blue);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:2px}
@@ -76,10 +71,8 @@
   .step-link{display:inline-flex;align-items:center;gap:5px;margin-top:.5rem;font-size:.85rem;color:var(--blue);border:1px solid var(--border);border-radius:6px;padding:5px 10px;background:var(--bg)}
   .step-link:hover{background:var(--blue-bg);text-decoration:none}
 
-  /* Divider */
   .divider{border:none;border-top:1px solid var(--border);margin:2rem 0}
 
-  /* Template cards */
   .template-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
   .template-card{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;background:var(--bg)}
   .template-card .icon{font-size:1.3rem;margin-bottom:.6rem}
@@ -91,19 +84,16 @@
   .dl-btn:hover{background:var(--bg3)}
   .dl-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
 
-  /* Install steps OS toggle */
   .os-tabs{display:flex;gap:6px;margin-bottom:1.5rem}
   .os-tab{padding:6px 14px;border-radius:7px;border:1px solid var(--border);font-size:.85rem;cursor:pointer;background:var(--bg);color:var(--text2)}
   .os-tab.active{background:var(--bg3);color:var(--text);border-color:var(--border2)}
 
-  /* Info box */
   .info-box{border-radius:var(--radius);padding:1rem 1.1rem;font-size:.875rem;margin-bottom:1.5rem;border:1px solid}
   .info-box.blue{background:var(--blue-bg);border-color:var(--blue);color:var(--text)}
   .info-box.green{background:var(--green-bg);border-color:var(--green);color:var(--text)}
   .info-box.amber{background:var(--amber-bg);border-color:var(--amber);color:var(--text)}
   .info-box strong{font-weight:600}
 
-  /* Edit guide */
   .edit-steps{display:flex;flex-direction:column;gap:1rem;margin-top:1rem}
   .edit-step{border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;background:var(--bg2)}
   .edit-step h4{font-size:.9rem;font-weight:600;margin-bottom:.3rem;display:flex;align-items:center;gap:.4rem}
@@ -148,7 +138,7 @@
       <div class="hero-card" onclick="showPage('lesson2', document.querySelector('.nav-links a:nth-child(3)'))">
         <div class="lesson-tag" data-en="Lesson 2" data-uz="2-dars" data-ru="Урок 2">Lesson 2</div>
         <h2 data-en="Download & run your template" data-uz="Shablonni yuklab oling va ishga tushiring" data-ru="Скачайте и запустите шаблон">Download & run your template</h2>
-        <p data-en="Download a ready script for your data type. Edit 3 things. Get a CSV for Power BI." data-uz="Ma'lumot turingiz uchun tayyor skriptni yuklab oling. 3 narsani tahrirlang. Power BI uchun CSV oling." data-ru="Скачайте готовый скрипт для вашего типа данных. Отредактируйте 3 вещи. Получите CSV для Power BI.">Download a ready script for your data type. Edit 3 things. Get a CSV for Power BI.</p>
+        <p data-en="Get your Bito API key, download a ready script, edit 3 things. Get a CSV for Power BI." data-uz="Bito API kalitini oling, tayyor skriptni yuklab oling, 3 narsani tahrirlang. Power BI uchun CSV oling." data-ru="Получите API-ключ Bito, скачайте готовый скрипт, отредактируйте 3 вещи. Получите CSV для Power BI.">Get your Bito API key, download a ready script, edit 3 things. Get a CSV for Power BI.</p>
         <div class="arrow">→ <span data-en="Download templates" data-uz="Shablonlarni yuklab oling" data-ru="Скачать шаблоны">Download templates</span></div>
       </div>
     </div>
@@ -207,16 +197,6 @@
           <p class="note" data-en="Wait for it to finish. You will see 'Successfully installed' at the end." data-uz="Tugashini kuting. Oxirida 'Successfully installed' ko'rinadi." data-ru="Дождитесь завершения. В конце появится 'Successfully installed'.">Wait for it to finish. You will see 'Successfully installed' at the end.</p>
         </div>
       </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-body">
-          <h3 data-en="Get your Bito API key" data-uz="Bito API kalitingizni oling" data-ru="Получите ваш API-ключ Bito">Get your Bito API key</h3>
-          <p data-en="Log in to Bito. Go to Settings → Integrations. Copy the API key. Keep it safe — treat it like a password." data-uz="Bito ga kiring. Sozlamalar → Integratsiyalar bo'limiga o'ting. API kalitini nusxa ko'chiring. Uni parol kabi asrang." data-ru="Войдите в Bito. Перейдите в Настройки → Интеграции. Скопируйте API-ключ. Храните его как пароль.">Log in to Bito. Go to Settings → Integrations. Copy the API key. Keep it safe — treat it like a password.</p>
-          <div class="info-box amber" style="margin-top:.6rem">
-            <strong data-en="Never share your API key" data-uz="API kalitingizni hech qachon ulashmang" data-ru="Никогда не делитесь API-ключом">Never share your API key</strong> — <span data-en="not in chat, not in email, not in code you send to someone else." data-uz="na chatda, na elektron pochta orqali, na birovga yuborganingiz kodda." data-ru="ни в чате, ни по электронной почте, ни в коде, который отправляете другим.">not in chat, not in email, not in code you send to someone else.</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -254,22 +234,12 @@
           <span class="cmd">pip3 install requests python-dotenv</span>
         </div>
       </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-body">
-          <h3 data-en="Get your Bito API key" data-uz="Bito API kalitingizni oling" data-ru="Получите ваш API-ключ Bito">Get your Bito API key</h3>
-          <p data-en="Log in to Bito. Go to Settings → Integrations. Copy the API key." data-uz="Bito ga kiring. Sozlamalar → Integratsiyalar. API kalitini nusxa ko'chiring." data-ru="Войдите в Bito. Перейдите Настройки → Интеграции. Скопируйте ключ.">Log in to Bito. Go to Settings → Integrations. Copy the API key.</p>
-          <div class="info-box amber" style="margin-top:.6rem">
-            <strong data-en="Never share your API key" data-uz="API kalitingizni hech qachon ulashmang" data-ru="Никогда не делитесь API-ключом">Never share your API key</strong> — <span data-en="not in chat, not in email, not in code you send to someone else." data-uz="na chatda, na elektron pochta orqali, na birovga yuborganingiz kodda." data-ru="ни в чате, ни по электронной почте, ни в коде который отправляете.">not in chat, not in email, not in code you send to someone else.</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <hr class="divider">
   <div class="info-box green">
-    <strong data-en="All done?" data-uz="Hammasi tayiormi?" data-ru="Всё готово?">All done?</strong> <span data-en="Go to Lesson 2 to download your template and connect your data." data-uz="Shablonni yuklab olish va ma'lumotlaringizni ulash uchun 2-darsga o'ting." data-ru="Перейдите к Уроку 2, чтобы скачать шаблон и подключить данные.">Go to Lesson 2 to download your template and connect your data.</span>
+    <strong data-en="All done?" data-uz="Hammasi tayiormi?" data-ru="Всё готово?">All done?</strong> <span data-en="Go to Lesson 2 to get your API key, download your template and connect your data." data-uz="API kalitingizni olish, shablonni yuklab olish va ma'lumotlaringizni ulash uchun 2-darsga o'ting." data-ru="Перейдите к Уроку 2, чтобы получить API-ключ, скачать шаблон и подключить данные.">Go to Lesson 2 to get your API key, download your template and connect your data.</span>
     <a href="#" onclick="showPage('lesson2', document.querySelector('.nav-links a:nth-child(3)'))" style="margin-left:.4rem;color:var(--green)">→ <span data-en="Lesson 2" data-uz="2-dars" data-ru="Урок 2">Lesson 2</span></a>
   </div>
 </div>
@@ -279,8 +249,24 @@
   <div class="page-header">
     <div class="label" data-en="Lesson 2" data-uz="2-dars" data-ru="Урок 2">Lesson 2</div>
     <h1 data-en="Download & run your template" data-uz="Shablonni yuklab oling va ishga tushiring" data-ru="Скачайте и запустите шаблон">Download & run your template</h1>
-    <p data-en="Pick the data type your business needs. Download the template. Follow 3 steps." data-uz="Biznesingizga kerakli ma'lumot turini tanlang. Shablonni yuklab oling. 3 qadamni bajaring." data-ru="Выберите тип данных, который нужен вашему бизнесу. Скачайте шаблон. Выполните 3 шага.">Pick the data type your business needs. Download the template. Follow 3 steps.</p>
+    <p data-en="First get your Bito API key, then pick a template and follow 3 steps." data-uz="Avval Bito API kalitingizni oling, keyin shablonni tanlang va 3 qadamni bajaring." data-ru="Сначала получите API-ключ Bito, затем выберите шаблон и выполните 3 шага.">First get your Bito API key, then pick a template and follow 3 steps.</p>
   </div>
+
+  <!-- STEP 0: Get API key — moved from Lesson 1 -->
+  <div class="steps" style="margin-bottom:2rem">
+    <div class="step">
+      <div class="step-num">0</div>
+      <div class="step-body">
+        <h3 data-en="Get your Bito API key" data-uz="Bito API kalitingizni oling" data-ru="Получите ваш API-ключ Bito">Get your Bito API key</h3>
+        <p data-en="Log in to Bito. Go to Settings → Integrations. Copy the API key. Keep it safe — treat it like a password." data-uz="Bito ga kiring. Sozlamalar → Integratsiyalar bo'limiga o'ting. API kalitini nusxa ko'chiring. Uni parol kabi asrang." data-ru="Войдите в Bito. Перейдите в Настройки → Интеграции. Скопируйте API-ключ. Храните его как пароль.">Log in to Bito. Go to Settings → Integrations. Copy the API key. Keep it safe — treat it like a password.</p>
+        <div class="info-box amber" style="margin-top:.6rem;margin-bottom:0">
+          <strong data-en="Never share your API key" data-uz="API kalitingizni hech qachon ulashmang" data-ru="Никогда не делитесь API-ключом">Never share your API key</strong> — <span data-en="not in chat, not in email, not in code you send to someone else." data-uz="na chatda, na elektron pochta orqali, na birovga yuborganingiz kodda." data-ru="ни в чате, ни по электронной почте, ни в коде, который отправляете другим.">not in chat, not in email, not in code you send to someone else.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
 
   <h2 style="font-size:1rem;font-weight:600;margin-bottom:.75rem" data-en="Choose your template" data-uz="Shablonni tanlang" data-ru="Выберите шаблон">Choose your template</h2>
 
@@ -479,26 +465,6 @@ function downloadTemplate(type) {
       URL.revokeObjectURL(a.href);
     });
 }
-  const fileMap = {
-    sales: 'sales_sync_runner.py',
-    customers: 'customer_sync_runner.py',
-    products: 'product_sync_runner.py',
-    invoices: 'invoice_sync_runner.py',
-    transactions: 'transaction_sync_runner.py'
-  };
-  const urls = {
-    sales: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/sales_sync_runner.py',
-    customers: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/customer_sync_runner.py',
-    products: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/product_sync_runner.py',
-    invoices: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/invoice_sync_runner.py',
-    transactions: 'https://raw.githubusercontent.com/restm0nt/API-connection-website/main/transaction_sync_runner.py'
-  };
-  const filename = fileMap[type];
-  const a = document.createElement('a');
-  a.href = urls[type];
-  a.download = filename;
-  a.click();
-
 </script>
 </body>
 </html>
